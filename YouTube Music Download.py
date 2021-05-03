@@ -1,16 +1,19 @@
 from pytube import YouTube
+import pytube.exceptions
 import os
 
 video = input('Add the URL of the video with HTTPS and everything:\n')
-yt = YouTube(video)
+try:
+    yt = YouTube(video)
+except pytube.exceptions.RegexMatchError:
+    print('Not a Video Url \nExiting..')
 
-print('The video you want is: \n'+ yt.title)
-user = os.path.expanduser('~') + '\Music'
-print('Downloading...')
-
-# yt.streams.filter(only_audio=True)
-stream = yt.streams.get_by_itag(140)
-stream.download(output_path = user)
-# print(yt.streams.filter(only_audio=True))
-print('done...' + '\n opening...')
-os.startfile(user)
+else:
+    print('The video you want is: \n'+ yt.title)
+    savePath = os.path.expanduserPath('~') + '\Music'
+    print('Downloading...')
+    # yt.streams.filter(only_audio=True)
+    stream = yt.streams.get_by_itag(140)
+    stream.download(output_path = savePath)
+    print('Done...' + '\nOpening Folder...')
+    os.startfile(savePath)
